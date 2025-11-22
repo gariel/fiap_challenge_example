@@ -5,7 +5,7 @@ on:
     branches: '**'
 
 jobs:
-  stackspot-banana:
+  stackspot-sonar-scanner-grupo-kilo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

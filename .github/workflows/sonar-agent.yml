@@ -25,3 +25,4 @@ jobs:
           QC_SLUG: ${{ secrets.QC_SLUG }}
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: python3 .github/workflows/stackspot.py
+ 

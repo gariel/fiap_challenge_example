@@ -1,8 +1,8 @@
 name: StackSpot AI - Agente Sonar - Grupo Kilo
 
-on:
-  pull_request:
-    paths: ['**/*.py'] # Ajuste conforme os arquivos que deseja analisar
+on: 
+  push:
+    branches: '**'
 
 jobs:
   stackspot-banana:

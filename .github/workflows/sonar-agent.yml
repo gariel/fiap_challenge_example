@@ -1,23 +1,27 @@
-name: Pylint
+name: StackSpot AI - Agente Sonar - Grupo Kilo
 
-on: [push]
+on:
+  pull_request:
+    paths: ['**/*.py'] # Ajuste conforme os arquivos que deseja analisar
 
 jobs:
-  build:
+  stackspot-banana:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-    - name: Analysing the code with pylint
-      run: |
-        pylint $(git ls-files '*.py')
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: tj-actions/changed-files@v44
+        id: changed-files
+      - name: Instalar dependências
+        run: |
+          pip install requests
+      - name: Rodar StackSpot Agente Sonar
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
+          CLIENT_REALM: ${{ secrets.CLIENT_REALM }}
+          QC_SLUG: ${{ secrets.QC_SLUG }}
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: python3 .github/workflows/stackspot.py

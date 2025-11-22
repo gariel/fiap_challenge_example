@@ -12,6 +12,7 @@ def get_access_token(account_slug, client_id, client_key):
         'grant_type': 'client_credentials',
         'client_secret': client_key
     }
+    print("POST", url)
     response = requests.post(url, headers=headers, data=data)
     return response.json()['access_token']
 
@@ -22,6 +23,7 @@ def create_rqc_execution(qc_slug, access_token, input_data):
         'Authorization': f'Bearer {access_token}'
     }
     data = {'input_data': input_data}
+    print("POST", url)
     response = requests.post(url, headers=headers, json=data)
     return response.content.decode('utf-8').strip('"')
 
@@ -30,6 +32,7 @@ def get_execution_status(execution_id, access_token):
     headers = {'Authorization': f'Bearer {access_token}'}
     i = 0
     while True:
+        print("GET", url)
         response = requests.get(url, headers=headers)
         response_data = response.json()
         status = response_data['progress']['status']
@@ -61,12 +64,19 @@ for file_path in CHANGED_FILES:
     if result.startswith("```"):
         result = result[7:-4].strip()
 
-    result_data = json.loads(result)
-    vulnerabilities_amount = len(result_data)
-    print(f"{vulnerabilities_amount} item(s) have been found for file {file_path}:")
+    try:
+        result_data = json.loads(result)
 
-    for item in result_data:
-        print(f"Title: {item['title']}")
-        print(f"Severity: {item['severity']}")
-        print(f"Correction: {item['correction']}")
-        print(f"Lines: {item['lines']}")
+        vulnerabilities_amount = len(result_data)
+        print(f"{vulnerabilities_amount} item(s) have been found for file {file_path}:")
+
+        for item in result_data:
+            print(f"Title: {item['title']}")
+            print(f"Severity: {item['severity']}")
+            print(f"Correction: {item['correction']}")
+            print(f"Lines: {item['lines']}")
+
+    except Exception as e:
+        print("Error loading data:", e)
+        print("Returned raw values:", result)
+

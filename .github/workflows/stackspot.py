@@ -48,7 +48,7 @@ QC_SLUG = os.getenv("QC_SLUG")
 CHANGED_FILES = os.getenv("CHANGED_FILES")
 
 print(f'Files to analyze: {CHANGED_FILES}')
-CHANGED_FILES = CHANGED_FILES.split(",")
+CHANGED_FILES = CHANGED_FILES.split(" ")
 
 for file_path in CHANGED_FILES:
     print(f'File Path: {file_path}')

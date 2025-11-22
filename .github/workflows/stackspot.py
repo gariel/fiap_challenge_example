@@ -41,24 +41,30 @@ def get_execution_status(execution_id, access_token):
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_KEY = os.getenv("CLIENT_KEY")
 ACCOUNT_SLUG = os.getenv("CLIENT_REALM")
-QC_SLUG = "banana"
+QC_SLUG = os.getenv("QC_SLUG")
 CHANGED_FILES = os.getenv("CHANGED_FILES")
 
 print(f'Files to analyze: {CHANGED_FILES}')
 CHANGED_FILES = ast.literal_eval(CHANGED_FILES)
+
 for file_path in CHANGED_FILES:
     print(f'File Path: {file_path}')
+
     with open(file_path, 'r') as file:
         file_content = file.read()
+
     access_token = get_access_token(ACCOUNT_SLUG, CLIENT_ID, CLIENT_KEY)
     execution_id = create_rqc_execution(QC_SLUG, access_token, file_content)
     execution_status = get_execution_status(execution_id, access_token)
     result = execution_status['result']
-    if result.startswith("```
+
+    if result.startswith("```"):
         result = result[7:-4].strip()
+
     result_data = json.loads(result)
     vulnerabilities_amount = len(result_data)
     print(f"{vulnerabilities_amount} item(s) have been found for file {file_path}:")
+
     for item in result_data:
         print(f"Title: {item['title']}")
         print(f"Severity: {item['severity']}")

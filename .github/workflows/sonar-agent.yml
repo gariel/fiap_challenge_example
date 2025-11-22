@@ -17,11 +17,11 @@ jobs:
       - name: Instalar dependências
         run: |
           pip install requests
-      # - name: Rodar StackSpot Agente Sonar
-      #   env:
-      #     CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      #     CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
-      #     CLIENT_REALM: ${{ secrets.CLIENT_REALM }}
-      #     QC_SLUG: ${{ secrets.QC_SLUG }}
-      #     CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-      #   run: python3 .github/workflows/stackspot.py
+      - name: Rodar StackSpot Agente Sonar
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
+          CLIENT_REALM: ${{ secrets.CLIENT_REALM }}
+          QC_SLUG: ${{ secrets.QC_SLUG }}
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: python3 .github/workflows/stackspot.py
